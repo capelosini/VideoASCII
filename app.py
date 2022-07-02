@@ -7,10 +7,9 @@ import gc
 import imageio.v2 as io
 
 def readVideo(video, w, h, totalFrames):
-    frames=[]
-    
     s, frame = video.read()
     count=0
+    frames=[]
     while s:
         count+=1
         percentage=round((count/totalFrames)*100)
@@ -28,10 +27,17 @@ def frame2ASCII(frame, w, h):
     char=""
     wid=1
     hei=1
-    charWidth = 10
-    charHeight = 18
-    font = ImageFont.truetype('SourceCodePro-Medium.ttf',15)
-    outputImage = Image.new('RGB',(round(w),round(h)),color=(0,0,0))
+    w=round(w)
+    h=round(h)
+    # Proportion of image based in 1920x1080
+    # charWidth = 10/1920 = 0.0052083333333333
+    # charHeight = 18/1080 = 0.0166666666666667
+    # fontSize = 15
+    charWidth = round(0.0052083333333333*w)
+    charHeight = round(0.0166666666666667*h)
+    fontSize = round((charWidth+charHeight)/2)+1
+    font = ImageFont.truetype('SourceCodePro-Medium.ttf', fontSize)
+    outputImage = Image.new('RGB', (w, h), color=(0,0,0))
     draw = ImageDraw.Draw(outputImage)
     for line in frame:
         for pixel in line:
