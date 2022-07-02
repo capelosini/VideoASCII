@@ -6,14 +6,15 @@ from PIL import Image,ImageDraw,ImageFont
 import gc
 import imageio.v2 as io
 
-def readVideo(video, w, h):
+def readVideo(video, w, h, totalFrames):
     frames=[]
     
     s, frame = video.read()
     count=0
     while s:
         count+=1
-        print(f"Loading Frame {str(count)}")
+        percentage=round((count/totalFrames)*100)
+        print(f"Loading Frame {str(count)} - {str(percentage)}%")
         s, frame = video.read()
         if s:
             resized=cv2.resize(frame, dsize=(200, 60), interpolation=cv2.INTER_CUBIC)
@@ -69,11 +70,12 @@ def clear():
 videoName=input("File: ")
 
 video=cv2.VideoCapture(videoName)
-width = video.get(cv2. CAP_PROP_FRAME_WIDTH )
-height = video.get(cv2. CAP_PROP_FRAME_HEIGHT )
+width=video.get(cv2.CAP_PROP_FRAME_WIDTH )
+height=video.get(cv2.CAP_PROP_FRAME_HEIGHT )
+length=video.get(cv2.CAP_PROP_FRAME_COUNT)
 fps=video.get(cv2.CAP_PROP_FPS)
 
-Frames=readVideo(video, width, height)
+Frames=readVideo(video, width, height, length)
 
 print("\nRendered!")
 print("\nExporting the video..")
