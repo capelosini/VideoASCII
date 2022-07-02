@@ -86,5 +86,5 @@ for Frame in Frames:
     
 clear()
 
-print("\nFinished!")
+input("\nFinished!")
 
